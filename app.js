@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 const morgan = require('morgan');
 
@@ -7,35 +9,51 @@ const playstore = require('./playstore');
 app.use(morgan('dev'));
 
 app.get('/apps', (req, res) => {
-    const { sort }= req.query;
-    // let apps = [];
-    // playstore.map(app => console.log(app));
-    if (sort) {
-        if (!['app', 'rating'].includes(sort)) {
-          return res
-            .status(400)
-            .send('Sort must be one of app or rating');
-        }
-      }
+  const { sort, genre = '' }= req.query;
+  // let apps = [];
+  // playstore.map(app => console.log(app));
 
-    // let apps = playstore.filter(app =>
-    //     app 
-    //         .App
-    //         .toLowerCase()
-    //         .includes(sort.toLowerCase())
-    // );
-    let results = playstore;  
-    if  (sort) {
-        results.sort((a, b) => {
-          return a[sort] > b[sort] ? 1 : a[sort] < b[sort] ? -1 : 0;
-        });
-      }
+  //validate user input
+  if (sort) {
+    if (!['app', 'rating'].includes(sort)) {
+      return res
+        .status(400)
+        .send('Sort must be one of app or rating');
+    }
+  }
+  if (genre) {
+    if (!['Action', 'Puzzle', 'Strategy', 'Casual', 'Arcade', 'Card'].includes(genre)) {
+      return res
+        .status(400)
+        .send('Genre must be Action, Puzzle, Strategy, Casual, Arcade, Card');
+    }
+  }
+
+  let results = playstore;  
+
+  //return entries for sort  
+  function capitalizeFirstLetter (term) {
+    return term.charAt(0).toUpperCase() + term.slice(1);
+  }
+  if  (sort) {
+    results.sort((a, b) => {
+      const sortTerm = capitalizeFirstLetter(sort);
+      return a[sortTerm] > b[sortTerm] ? 1 : a[sortTerm] < b[sortTerm] ? -1 : 0;
+    });
+  }
+
+  //return entries for genre search
+  if (genre) {
+    results = playstore.filter(app =>
+      app 
+        .Genres.toLowerCase()
+        .includes(genre.toLowerCase())
+    );
+  }
   
-
-    res.json(results);
-    
-})
+  res.json(results);
+});
 
 app.listen(8000, () => {
-    console.log('server started on PORT 8000');
+  console.log('server started on PORT 8000');
 });

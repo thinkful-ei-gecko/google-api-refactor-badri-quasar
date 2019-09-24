@@ -1,7 +1,6 @@
 {
   "name": "google-play-api",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "dependencies": {
     "express": "^4.17.1",
@@ -17,5 +16,14 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thinkful-ei-gecko/badri-phoebe--google-apps.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thinkful-ei-gecko/badri-phoebe--google-apps/issues"
+  },
+  "homepage": "https://github.com/thinkful-ei-gecko/badri-phoebe--google-apps#readme",
+  "description": ""
 }
