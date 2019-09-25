@@ -3,13 +3,14 @@
 const express = require('express');
 const morgan = require('morgan');
 
+
 const app = express();
 const playstore = require('./playstore');
 
 app.use(morgan('dev'));
 
 app.get('/apps', (req, res) => {
-  const { sort, genre = '' }= req.query;
+  const { sort, genre = '' } = req.query;
   // let apps = [];
   // playstore.map(app => console.log(app));
 
@@ -35,6 +36,7 @@ app.get('/apps', (req, res) => {
   function capitalizeFirstLetter (term) {
     return term.charAt(0).toUpperCase() + term.slice(1);
   }
+  
   if  (sort) {
     results.sort((a, b) => {
       const sortTerm = capitalizeFirstLetter(sort);
@@ -54,6 +56,4 @@ app.get('/apps', (req, res) => {
   res.json(results);
 });
 
-app.listen(8000, () => {
-  console.log('server started on PORT 8000');
-});
+module.exports = app;
